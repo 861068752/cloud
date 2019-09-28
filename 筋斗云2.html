@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+			.box{
+				position: relative;
+				top: 200px;
+				left: 50%;
+			}
+			.nav{
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 1;
+			}
+		    .nav li{
+		    	float: left;
+		    	text-align: center;
+		    	cursor: pointer;
+		    	
+		    }
+			.bars{
+			 position: absolute;
+			 top: 0;
+			 left: 0;
+			 background: url(img/cloud.gif) no-repeat;
+			 background-size: 100% 100%;	
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="box"></div>
+	</body>
+	<script type="text/javascript">
+		var box = document.getElementsByClassName("box")[0];
+		var txt = ['首页','主题','音乐','电影','新闻','综艺','明星','数码'];
+		
+		function getTxt(obj,data){
+			var html = maketxtsul(data);
+			    html+= makeBars();
+			obj.innerHTML = html;
+			
+			makeDomStyle(obj);
+			txtMove(obj)
+		}
+		function maketxtsul(data){
+			var html = '<ul class="nav">';
+			for(var i=0;i<data.length;i++){
+				html+='<li>'+data[i]+'</li>';
+			}   html+='</ul>';
+			    return html;
+			
+			
+		}
+		function makeBars(){
+			return '<div class="bars"></div>';
+		}
+		function makeDomStyle(obj){
+			var nav = obj.children[0];
+			var lis = nav.children;
+			var BarBtn = obj.children[1];
+			
+			for(var i=0;i<lis.length;i++){
+				lis[i].style.width = "100px";
+				lis[i].style.height = "40px";
+				lis[i].style.lineHeight = "40px";
+			}
+			nav.style.width = lis[0].offsetWidth*lis.length + "px";
+			nav.style.height = lis[0].offsetHeight + "px";
+			obj.style.width = lis[0].offsetWidth*lis.length + "px";
+			obj.style.height = lis[0].offsetHeight + "px";
+			obj.style.marginLeft = -obj.offsetWidth/2 + "px";
+			BarBtn.style.width = lis[0].offsetWidth + "px";
+			BarBtn.style.height = lis[0].offsetHeight + "px";
+		}
+		function txtMove(obj){
+			var nav = obj.children[0];
+			var lis = nav.children;
+			var BarBtn = obj.children[1];
+			BarBtn.current = 0;
+			for(var i=0;i<lis.length;i++){
+				lis[i].index = i;
+				lis[i].addEventListener('mouseenter',function(){
+					console.log(this.index);
+					var x = this.index*lis[0].offsetWidth;
+					BarBtn.style.transition = 'all 0.5s';
+					BarBtn.style.transform = 'translateX('+x+'px)';
+					
+					
+				})
+				lis[i].addEventListener('mouseout',function(){
+					console.log(this.index);
+					var x = BarBtn.current*lis[0].offsetWidth;
+					BarBtn.style.transition = 'all 0.5s';
+					BarBtn.style.transform = 'translateX('+x+'px)';
+					
+					
+				})
+				lis[i].addEventListener('click',function(){
+					console.log(this.index);
+					BarBtn.current = this.index;
+					var x = BarBtn.current*lis[0].offsetWidth;
+					BarBtn.style.transition = 'all 0.5s';
+					BarBtn.style.transform = 'translateX('+x+'px)';
+					
+					
+				})
+			}
+				
+		
+			
+			
+		}
+		
+		getTxt(box,txt);
+		
+		
+		
+		
+	</script>
+</html>
